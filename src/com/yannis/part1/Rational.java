@@ -1,6 +1,6 @@
 package com.yannis.part1;
 /**
- * 实现一个不可变的有理数，支持加减乘除运算
+ * 实现一个不可变的有理数，支持加减乘除运算,使用断言检测溢出
  * @author Administrator
  *
  */
@@ -10,6 +10,8 @@ public class Rational {
 	public Rational(long numerator, long denominator) {
 		super();
 		if (denominator == 0) throw new ArithmeticException();
+		assertDef(numerator);
+		assertDef(denominator);
 		//去掉分子分母的约数
 		long divisor = gcd(numerator,denominator);
 		if(Math.abs(divisor) > 1) {
@@ -25,7 +27,7 @@ public class Rational {
 	 * @return
 	 */
 	public Rational plus(Rational b) {
-		return new Rational(this.numerator*b.denominator+b.numerator*this.denominator,this.denominator*b.denominator);
+		return new Rational(assertDef(this.numerator*b.denominator+b.numerator*this.denominator),assertDef(this.denominator*b.denominator));
 	}
 	 
     /**
@@ -34,7 +36,7 @@ public class Rational {
      * @return
      */
 	public Rational minus(Rational b) {
-		return new Rational(this.numerator*b.denominator-b.numerator*this.denominator,this.denominator*b.denominator);
+		return new Rational(assertDef(this.numerator*b.denominator-b.numerator*this.denominator),assertDef(this.denominator*b.denominator));
 	}
 	/**
 	 * 该数与b之积
@@ -42,7 +44,7 @@ public class Rational {
 	 * @return
 	 */
 	public Rational times(Rational b) {
-		return new Rational(this.numerator*b.numerator,this.denominator*b.denominator);
+		return new Rational(assertDef(this.numerator*b.numerator),assertDef(this.denominator*b.denominator));
 	}
 	
 	/**
@@ -51,7 +53,7 @@ public class Rational {
 	 * @return
 	 */
 	public Rational divides(Rational b) {
-		return new Rational(this.numerator*b.denominator,this.denominator*b.numerator);
+		return new Rational(assertDef(this.numerator*b.denominator),(this.denominator*b.numerator));
 	}
 
 	@Override
@@ -83,6 +85,11 @@ public class Rational {
 		if(q == 0) return p;
 		long r = p % q;
 		return gcd(q,r);
+	}
+	
+	public long assertDef(long num) {
+		assert (num <= Long.MAX_VALUE || num >= Long.MIN_VALUE):"数据溢出！";
+		return num;
 	}
 }
 
