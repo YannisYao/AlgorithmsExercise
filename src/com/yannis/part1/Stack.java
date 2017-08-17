@@ -76,5 +76,22 @@ public void push(Item item) {
 		}
 		
 	}
+	/**
+	 * 拷贝一个String类型栈的副本
+	 * @param stack
+	 * @return
+	 */
+	public static Stack<String> copy(Stack<String> stack){
+		Stack<String> newStack = new Stack<>();
+		String[] strs = new String[stack.size()];
+		int i =0;
+		for(String s : stack) {
+			strs[i++] = stack.pop();
+		}
+		for(int t = strs.length -1;t >=0 ;t--) {
+			newStack.push(strs[t]);
+		}
+		return newStack;
+	}
 
 }
